@@ -1,4 +1,4 @@
-﻿namespace SnapGame
+﻿namespace SnapGame.Classes
 {
     internal class Card
     {
