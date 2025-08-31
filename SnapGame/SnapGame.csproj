@@ -48,7 +48,9 @@
   <ItemGroup>
     <Compile Include="Classes\Card.cs" />
     <Compile Include="Classes\Deck.cs" />
+    <Compile Include="Classes\PlayCardPokerGame.cs" />
     <Compile Include="Enums\Enum.cs" />
+    <Compile Include="Factory\CardGameFactory.cs" />
     <Compile Include="Interfaces\IPlayCardGame.cs" />
     <Compile Include="Classes\Player.cs" />
     <Compile Include="Classes\PlayCardSnapGame.cs" />

@@ -6,4 +6,10 @@
         Suit,
         Both
     }
+
+    public enum GameType
+    {
+        Snap,
+        Poker
+    }
 }
