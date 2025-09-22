@@ -1,5 +1,5 @@
 ﻿using SnapGame.Enums;
-using SnapGame.InterFaces;
+using SnapGame.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,7 +59,7 @@ namespace SnapGame.Classes
 
                 if (IsSnap(playedCards[playedCards.Count - 1], playedCards[playedCards.Count - 2], MatchingCondition))
                 {
-                    Players.SingleOrDefault(x => x.ID == currentPlayerID).CardsCollected += playedCards.Count;
+                    Players.Single(x => x.ID == currentPlayerID).CardsCollected += playedCards.Count;
                     playedCards.Clear();
                 }
 
@@ -72,19 +72,23 @@ namespace SnapGame.Classes
             return Players;     // Returning Players data just in case caller wants to do some special handling, for pre defined cases, return value can be ignored
         }
 
-        public string DeclareResult()
+        public GameResultDto DeclareResult()
         {
             Players = Players.OrderByDescending(X => X.CardsCollected).ToList();
             var winner = Players.FirstOrDefault();
             var isMatchDraw = !Players.Any(X => X.CardsCollected < winner.CardsCollected);
-            if (isMatchDraw)
+
+            var dto = new GameResultDto
             {
-                return $"Match is Draw, {string.Join(", ", Players.Select(X => $"{X.Name} cards: {X.CardsCollected}"))}";
-            }
-            else
-            {
-                return $"{winner.Name} is won, {string.Join(", ", Players.Select(X => $"{X.Name} cards: {X.CardsCollected}"))}";
-            }
+                IsDraw = isMatchDraw,
+                WinnerName = isMatchDraw ? null : winner.Name,
+                PlayerResults = Players.Select(x => new PlayerResultDto
+                {
+                    Name = x.Name,
+                    CardsCollected = x.CardsCollected
+                }).ToList()
+            };
+            return dto;
         }
 
         private bool IsSnap(Card card1, Card card2, MatchingCondition matchingCondition)

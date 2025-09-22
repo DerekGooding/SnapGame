@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SnapGame.Classes;
-using SnapGame.InterFaces;
+﻿using SnapGame.Classes;
 using SnapGame.Enums;
+using SnapGame.Interfaces;
+using System;
 
 namespace SnapGame.Factory
 {
@@ -19,10 +15,10 @@ namespace SnapGame.Factory
                     return new PlayCardSnapGame(numberOfDecks, numberOfPlayers, matchingCondition);
 
                 case GameType.Poker:
-                    return new PlayCardPokerGame();
+                    return new PlayCardPokerGame(numberOfDecks, numberOfPlayers, matchingCondition);
 
                 default:
-                    return null;
+                    throw new ArgumentException($"Unsupported game type, game type: {gateType}");
             }
         }
     }

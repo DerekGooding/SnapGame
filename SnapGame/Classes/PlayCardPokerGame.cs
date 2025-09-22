@@ -1,22 +1,23 @@
-﻿using SnapGame.InterFaces;
-using System;
+﻿using SnapGame.Enums;
+using SnapGame.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SnapGame.Classes
 {
     internal class PlayCardPokerGame : IPlayCardGame
     {
-        public string DeclareResult()
+        public PlayCardPokerGame(int numberOfDecks, int numberOfPlayers, MatchingCondition matchingCondition)
         {
-            throw new NotImplementedException();
+        }
+
+        public GameResultDto DeclareResult()
+        {
+            return null;    // Implementation pending
         }
 
         public List<Player> PlayGame()
         {
-            throw new NotImplementedException();
+            return null; // Implementation pending
         }
     }
 }

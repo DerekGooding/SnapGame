@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SnapGame.Classes
 {
@@ -52,7 +51,14 @@ namespace SnapGame.Classes
         private Queue<Card> ShuffleDeck(List<Card> lstCards)
         {
             var rand = new Random();
-            return new Queue<Card>(lstCards.OrderBy(X => rand.Next()));
+            for (int i = lstCards.Count - 1; i > 0; i--)
+            {
+                var j = rand.Next(i + 1);
+                var temp = lstCards[i];
+                lstCards[i] = lstCards[j];
+                lstCards[j] = temp;
+            }
+            return new Queue<Card>(lstCards);
         }
     }
 }

@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using SnapGame.Classes;
+﻿using SnapGame.Classes;
+using System.Collections.Generic;
 
-namespace SnapGame.InterFaces
+namespace SnapGame.Interfaces
 {
     internal interface IPlayCardGame
     {
         List<Player> PlayGame();
 
-        string DeclareResult();
+        GameResultDto DeclareResult();
     }
 }

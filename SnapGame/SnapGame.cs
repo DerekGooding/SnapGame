@@ -1,29 +1,67 @@
 ﻿using SnapGame.Enums;
 using SnapGame.Factory;
-using SnapGame.InterFaces;
+using SnapGame.Interfaces;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SnapGame
 {
     public partial class SnapGame : Form
     {
-        public SnapGame()
+        private readonly IGameService _gameService;
+
+        public SnapGame(IGameService gameService)
         {
             InitializeComponent();
+
+            _gameService = gameService;
         }
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            int numberOfDecks = Convert.ToInt32(txtNoOfDeck.Text);
-            int numberOfPlayers = Convert.ToInt32(txtNoOfPlayers.Text);
-            var matchingCondition = (MatchingCondition)Enum.Parse(typeof(MatchingCondition), ddlMatchingCondition.SelectedItem.ToString());
+            int numberOfDecks, numberOfPlayers;
+            if (!int.TryParse(txtNoOfDeck.Text, out numberOfDecks) || numberOfDecks <= 0)
+            {
+                MessageBox.Show("Please enter valid number of decks.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            IPlayCardGame playGame = CardGameFactory.GetGame(GameType.Snap, numberOfDecks, numberOfPlayers, matchingCondition); // Create different concrete class objects based on game type e.g PlayCardSnapGame, PlayCardPokerGame etc., every concrete class should have atleast two function, PlayGame and DeclareResult which is required for any card game.
-            playGame.PlayGame();
-            var strResult = playGame.DeclareResult();
+            if (!int.TryParse(txtNoOfPlayers.Text, out numberOfPlayers) || numberOfPlayers <= 1)
+            {
+                MessageBox.Show("Please enter valid number of players, Minimum two players.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (ddlMatchingCondition.SelectedItem == null)
+            {
+                MessageBox.Show("Please select matching condition.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            lblResult.Text = strResult;
+            try
+            {
+                var matchingCondition = (MatchingCondition)Enum.Parse(typeof(MatchingCondition), ddlMatchingCondition.SelectedItem.ToString());
+                var playGame = CardGameFactory.GetGame(GameType.Snap, numberOfDecks, numberOfPlayers, matchingCondition);
+                playGame.PlayGame();
+                var resultDto = playGame.DeclareResult();
+
+                string formattedResult;
+                if (resultDto.IsDraw)
+                {
+                    formattedResult = "Match is Draw, " +
+                        string.Join(", ", resultDto.PlayerResults.Select(x => $"{x.Name} cards: {x.CardsCollected}"));
+                }
+                else
+                {
+                    formattedResult = $"{resultDto.WinnerName} is won, " +
+                        string.Join(", ", resultDto.PlayerResults.Select(x => $"{x.Name} cards: {x.CardsCollected}"));
+                }
+                lblResult.Text = formattedResult;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
