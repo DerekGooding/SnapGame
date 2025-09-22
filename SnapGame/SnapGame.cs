@@ -1,6 +1,4 @@
-﻿using SnapGame.Classes;
-using SnapGame.Enums;
-using SnapGame.Factory;
+﻿using SnapGame.Enums;
 using SnapGame.Interfaces;
 using System;
 using System.Linq;
