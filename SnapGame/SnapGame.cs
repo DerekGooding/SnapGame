@@ -1,4 +1,5 @@
-﻿using SnapGame.Enums;
+﻿using SnapGame.Classes;
+using SnapGame.Enums;
 using SnapGame.Factory;
 using SnapGame.Interfaces;
 using System;
@@ -41,9 +42,7 @@ namespace SnapGame
             try
             {
                 var matchingCondition = (MatchingCondition)Enum.Parse(typeof(MatchingCondition), ddlMatchingCondition.SelectedItem.ToString());
-                var playGame = CardGameFactory.GetGame(GameType.Snap, numberOfDecks, numberOfPlayers, matchingCondition);
-                playGame.PlayGame();
-                var resultDto = playGame.DeclareResult();
+                var resultDto = _gameService.PlayGame(GameType.Snap, numberOfDecks, numberOfPlayers, matchingCondition);
 
                 string formattedResult;
                 if (resultDto.IsDraw)
