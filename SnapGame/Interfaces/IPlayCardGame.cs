@@ -1,12 +1,11 @@
 ﻿using SnapGame.Classes;
 using System.Collections.Generic;
 
-namespace SnapGame.Interfaces
-{
-    public interface IPlayCardGame
-    {
-        List<Player> PlayGame();
+namespace SnapGame.Interfaces;
 
-        GameResultDto DeclareResult();
-    }
+public interface IPlayCardGame
+{
+    List<Player> PlayGame();
+
+    GameResultDto DeclareResult();
 }

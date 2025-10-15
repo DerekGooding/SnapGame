@@ -1,32 +1,28 @@
 ﻿using SnapGame.Classes;
 using SnapGame.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SnapGame
+namespace SnapGame;
+
+internal static class Program
 {
-    internal static class Program
+    /// <summary>
+    /// The main entry point for the application.
+    /// </summary>
+    [STAThread]
+    private static void Main()
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        private static void Main()
-        {
-            var services = new ServiceCollection();
-            services.AddSingleton<IGameService, GameService>();
-            services.AddTransient<SnapGame>();
-            using var provider = services.BuildServiceProvider();
+        var services = new ServiceCollection();
+        services.AddSingleton<IGameService, GameService>();
+        services.AddTransient<SnapGame>();
+        using var provider = services.BuildServiceProvider();
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
 
-            var mainForm = provider.GetRequiredService<SnapGame>();
-            Application.Run(mainForm);
-        }
+        var mainForm = provider.GetRequiredService<SnapGame>();
+        Application.Run(mainForm);
     }
 }

@@ -4,61 +4,60 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace SnapGame
+namespace SnapGame;
+
+public partial class SnapGame : Form
 {
-    public partial class SnapGame : Form
+    private readonly IGameService _gameService;
+
+    public SnapGame(IGameService gameService)
     {
-        private readonly IGameService _gameService;
+        InitializeComponent();
 
-        public SnapGame(IGameService gameService)
+        _gameService = gameService;
+    }
+
+    private void btnPlay_Click(object sender, EventArgs e)
+    {
+        int numberOfDecks, numberOfPlayers;
+        if (!int.TryParse(txtNoOfDeck.Text, out numberOfDecks) || numberOfDecks <= 0)
         {
-            InitializeComponent();
-
-            _gameService = gameService;
+            MessageBox.Show("Please enter valid number of decks.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
         }
 
-        private void btnPlay_Click(object sender, EventArgs e)
+        if (!int.TryParse(txtNoOfPlayers.Text, out numberOfPlayers) || numberOfPlayers <= 1)
         {
-            int numberOfDecks, numberOfPlayers;
-            if (!int.TryParse(txtNoOfDeck.Text, out numberOfDecks) || numberOfDecks <= 0)
-            {
-                MessageBox.Show("Please enter valid number of decks.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            MessageBox.Show("Please enter valid number of players, Minimum two players.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+        if (ddlMatchingCondition.SelectedItem == null)
+        {
+            MessageBox.Show("Please select matching condition.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
 
-            if (!int.TryParse(txtNoOfPlayers.Text, out numberOfPlayers) || numberOfPlayers <= 1)
-            {
-                MessageBox.Show("Please enter valid number of players, Minimum two players.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            if (ddlMatchingCondition.SelectedItem == null)
-            {
-                MessageBox.Show("Please select matching condition.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+        try
+        {
+            var matchingCondition = (MatchingCondition)Enum.Parse(typeof(MatchingCondition), ddlMatchingCondition.SelectedItem.ToString());
+            var resultDto = _gameService.PlayGame(GameType.Snap, numberOfDecks, numberOfPlayers, matchingCondition);
 
-            try
+            string formattedResult;
+            if (resultDto.IsDraw)
             {
-                var matchingCondition = (MatchingCondition)Enum.Parse(typeof(MatchingCondition), ddlMatchingCondition.SelectedItem.ToString());
-                var resultDto = _gameService.PlayGame(GameType.Snap, numberOfDecks, numberOfPlayers, matchingCondition);
-
-                string formattedResult;
-                if (resultDto.IsDraw)
-                {
-                    formattedResult = "Match is Draw, " +
-                        string.Join(", ", resultDto.PlayerResults.Select(x => $"{x.Name} cards: {x.CardsCollected}"));
-                }
-                else
-                {
-                    formattedResult = $"{resultDto.WinnerName} is won, " +
-                        string.Join(", ", resultDto.PlayerResults.Select(x => $"{x.Name} cards: {x.CardsCollected}"));
-                }
-                lblResult.Text = formattedResult;
+                formattedResult = "Match is Draw, " +
+                    string.Join(", ", resultDto.PlayerResults.Select(x => $"{x.Name} cards: {x.CardsCollected}"));
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                formattedResult = $"{resultDto.WinnerName} is won, " +
+                    string.Join(", ", resultDto.PlayerResults.Select(x => $"{x.Name} cards: {x.CardsCollected}"));
             }
+            lblResult.Text = formattedResult;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
