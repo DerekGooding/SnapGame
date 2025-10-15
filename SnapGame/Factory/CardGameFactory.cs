@@ -5,7 +5,7 @@ using System;
 
 namespace SnapGame.Factory;
 
-public class CardGameFactory
+public static class CardGameFactory
 {
     public static IPlayCardGame GetGame(GameType gateType, int numberOfDecks, int numberOfPlayers, MatchingCondition matchingCondition) => gateType switch
     {

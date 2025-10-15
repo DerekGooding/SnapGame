@@ -17,16 +17,15 @@ public partial class SnapGame : Form
         _gameService = gameService;
     }
 
-    private void btnPlay_Click(object sender, EventArgs e)
+    private void BtnPlay_Click(object sender, EventArgs e)
     {
-        int numberOfDecks, numberOfPlayers;
-        if (!int.TryParse(txtNoOfDeck.Text, out numberOfDecks) || numberOfDecks <= 0)
+        if (!int.TryParse(txtNoOfDeck.Text, out var numberOfDecks) || numberOfDecks <= 0)
         {
             MessageBox.Show("Please enter valid number of decks.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
-        if (!int.TryParse(txtNoOfPlayers.Text, out numberOfPlayers) || numberOfPlayers <= 1)
+        if (!int.TryParse(txtNoOfPlayers.Text, out var numberOfPlayers) || numberOfPlayers <= 1)
         {
             MessageBox.Show("Please enter valid number of players, Minimum two players.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
@@ -42,18 +41,11 @@ public partial class SnapGame : Form
             var matchingCondition = (MatchingCondition)Enum.Parse(typeof(MatchingCondition), ddlMatchingCondition.SelectedItem.ToString());
             var resultDto = _gameService.PlayGame(GameType.Snap, numberOfDecks, numberOfPlayers, matchingCondition);
 
-            string formattedResult;
-            if (resultDto.IsDraw)
-            {
-                formattedResult = "Match is Draw, " +
+            lblResult.Text = resultDto.IsDraw
+                ? "Match is Draw, " +
+                    string.Join(", ", resultDto.PlayerResults.Select(x => $"{x.Name} cards: {x.CardsCollected}"))
+                : $"{resultDto.WinnerName} is won, " +
                     string.Join(", ", resultDto.PlayerResults.Select(x => $"{x.Name} cards: {x.CardsCollected}"));
-            }
-            else
-            {
-                formattedResult = $"{resultDto.WinnerName} is won, " +
-                    string.Join(", ", resultDto.PlayerResults.Select(x => $"{x.Name} cards: {x.CardsCollected}"));
-            }
-            lblResult.Text = formattedResult;
         }
         catch (Exception ex)
         {

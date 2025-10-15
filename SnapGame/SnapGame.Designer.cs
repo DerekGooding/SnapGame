@@ -83,7 +83,7 @@
             this.btnPlay.TabIndex = 6;
             this.btnPlay.Text = "Play Game";
             this.btnPlay.UseVisualStyleBackColor = true;
-            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
+            this.btnPlay.Click += new System.EventHandler(this.BtnPlay_Click);
             // 
             // lblResult
             // 

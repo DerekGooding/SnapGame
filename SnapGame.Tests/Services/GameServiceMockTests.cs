@@ -16,11 +16,11 @@ public class GameServiceMockTests
         {
             IsDraw = false,
             WinnerName = "Player 1",
-            PlayerResults = new System.Collections.Generic.List<PlayerResultDto>
-            {
+            PlayerResults =
+            [
                 new PlayerResultDto { Name = "Player 1", CardsCollected = 10 },
                 new PlayerResultDto { Name = "Player 2", CardsCollected = 5 }
-            }
+            ]
         };
 
         var mockService = new Mock<IGameService>();
@@ -44,11 +44,11 @@ public class GameServiceMockTests
         {
             IsDraw = true,
             WinnerName = null,
-            PlayerResults = new System.Collections.Generic.List<PlayerResultDto>
-            {
+            PlayerResults =
+            [
                 new PlayerResultDto { Name = "Player 1", CardsCollected = 7 },
                 new PlayerResultDto { Name = "Player 2", CardsCollected = 7 }
-            }
+            ]
         };
 
         var mockService = new Mock<IGameService>();
