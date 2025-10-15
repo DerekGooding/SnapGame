@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Unity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SnapGame
 {
@@ -17,11 +17,16 @@ namespace SnapGame
         [STAThread]
         private static void Main()
         {
-            var container = new UnityContainer();
-            container.RegisterType<IGameService, GameService>();
+            var services = new ServiceCollection();
+            services.AddSingleton<IGameService, GameService>();
+            services.AddTransient<SnapGame>();
+            using var provider = services.BuildServiceProvider();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(container.Resolve<SnapGame>());
+
+            var mainForm = provider.GetRequiredService<SnapGame>();
+            Application.Run(mainForm);
         }
     }
 }
