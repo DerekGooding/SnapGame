@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SnapGame.Interfaces
 {
-    internal interface IPlayCardGame
+    public interface IPlayCardGame
     {
         List<Player> PlayGame();
 
