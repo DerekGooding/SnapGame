@@ -7,18 +7,10 @@ namespace SnapGame.Factory;
 
 public class CardGameFactory
 {
-    public static IPlayCardGame GetGame(GameType gateType, int numberOfDecks, int numberOfPlayers, MatchingCondition matchingCondition)
+    public static IPlayCardGame GetGame(GameType gateType, int numberOfDecks, int numberOfPlayers, MatchingCondition matchingCondition) => gateType switch
     {
-        switch (gateType)
-        {
-            case GameType.Snap:
-                return new PlayCardSnapGame(numberOfDecks, numberOfPlayers, matchingCondition);
-
-            case GameType.Poker:
-                return new PlayCardPokerGame(numberOfDecks, numberOfPlayers, matchingCondition);
-
-            default:
-                throw new ArgumentException($"Unsupported game type, game type: {gateType}");
-        }
-    }
+        GameType.Snap => new PlayCardSnapGame(numberOfDecks, numberOfPlayers, matchingCondition),
+        GameType.Poker => new PlayCardPokerGame(numberOfDecks, numberOfPlayers, matchingCondition),
+        _ => throw new ArgumentException($"Unsupported game type, game type: {gateType}"),
+    };
 }

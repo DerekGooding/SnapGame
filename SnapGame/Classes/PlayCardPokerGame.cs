@@ -4,19 +4,9 @@ using System.Collections.Generic;
 
 namespace SnapGame.Classes;
 
-internal class PlayCardPokerGame : IPlayCardGame
+internal class PlayCardPokerGame(int numberOfDecks, int numberOfPlayers, MatchingCondition matchingCondition) : IPlayCardGame
 {
-    public PlayCardPokerGame(int numberOfDecks, int numberOfPlayers, MatchingCondition matchingCondition)
-    {
-    }
+    public GameResultDto DeclareResult() => throw new System.NotImplementedException(); // Implementation pending
 
-    public GameResultDto DeclareResult()
-    {
-        return null;    // Implementation pending
-    }
-
-    public List<Player> PlayGame()
-    {
-        return null; // Implementation pending
-    }
+    public List<Player> PlayGame() => throw new System.NotImplementedException(); // Implementation pending
 }

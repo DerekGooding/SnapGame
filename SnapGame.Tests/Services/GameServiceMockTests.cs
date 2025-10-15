@@ -33,7 +33,7 @@ public class GameServiceMockTests
         Assert.IsNotNull(result);
         Assert.IsFalse(result.IsDraw);
         Assert.AreEqual("Player 1", result.WinnerName);
-        Assert.AreEqual(2, result.PlayerResults.Count);
+        Assert.HasCount(2, result.PlayerResults);
         Assert.AreEqual(10, result.PlayerResults[0].CardsCollected);
     }
 
@@ -60,7 +60,7 @@ public class GameServiceMockTests
         // Assert
         Assert.IsTrue(result.IsDraw);
         Assert.IsNull(result.WinnerName);
-        Assert.AreEqual(2, result.PlayerResults.Count);
+        Assert.HasCount(2, result.PlayerResults);
         Assert.AreEqual(7, result.PlayerResults[0].CardsCollected);
     }
 }

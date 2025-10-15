@@ -1,14 +1,8 @@
 ﻿namespace SnapGame.Classes;
 
-public class Player
+public class Player(int id, string name)
 {
-    public int ID { get; set; }
-    public string Name { get; set; }
+    public int ID { get; set; } = id;
+    public string Name { get; set; } = name;
     public int CardsCollected { get; set; }
-
-    public Player(int id, string name)
-    {
-        ID = id;
-        Name = name;
-    }
 }
